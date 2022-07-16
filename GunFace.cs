@@ -6,23 +6,21 @@ public class GunFace : MonoBehaviour
 {
     public Projectile projPrefab;
     public Stake staPrefab;
-    public Grenade gPrefab;
 
 
-    public event EventHandler OnWeaponChanged;
-    public event EventHandler OnPickedUpWeapon;
-    public event EventHandler OnDodged;
 
-    private enum State
-    {
-        Normal,
-    }
+ 
+
 
    // private PlayerMain playerMain;
     public string Weapon = "Stake";
     public float stakecool = 0.5f;
+    
     public int shotnumbul;
-   
+    public float Shotcoolstart;
+    float shotcool = 5f;
+
+
 
     private bool canUseShotgun;
     private bool canUseRifle = true;
@@ -33,7 +31,6 @@ public class GunFace : MonoBehaviour
     public int rifleAmmo = 6;
     public float rifleCool = 2f;
 
-    public int Grendaes = 0;
 
 
     // Start is called before the first frame update
@@ -52,10 +49,7 @@ public class GunFace : MonoBehaviour
         rifleAmmo += Delta;
     }
 
-    public void SetGrenades(int Delta)
-    {
-        Grendaes += Delta;
-    }
+  
     public void SetCanUseShotgun()
     {
         canUseShotgun = true;
@@ -160,16 +154,16 @@ public class GunFace : MonoBehaviour
 
 
         }
-        else if (Weapon == "Rifle")
+        else if (Weapon == "Shotgun")
         {
-            if (rifleCool <= 0f)
+            if (shotcool <= 0f)
             {
 
                 if (rifleAmmo > 0)
                 {
                     rifleAmmo -= 1;
 
-                    for (int i = 0; i > 3; i++)
+                    for (int i = 0; i < shotnumbul; i++)
                     {
                        
 
@@ -188,7 +182,7 @@ public class GunFace : MonoBehaviour
 
 
                   
-                    rifleCool = 2f;
+                    shotcool = Shotcoolstart;
                 }
             }
         }
@@ -206,20 +200,23 @@ public class GunFace : MonoBehaviour
             }
 
         }
-        else if (Weapon == "Shotgun")
+        else if (Weapon == "Rifle")
         {
-            for (int i = 0; i < shotnumbul; i++)
+            if(rifleCool <= 0f)
             {
-                // Debug.Log("ran ");
-                Projectile temp = GameObject.Instantiate(projPrefab, new Vector3(this.transform.position.x + d.x, this.transform.position.y + d.y), this.transform.rotation);
+              
+                    // Debug.Log("ran ");
+                    Projectile temp = GameObject.Instantiate(projPrefab, new Vector3(this.transform.position.x + d.x, this.transform.position.y + d.y), this.transform.rotation);
 
-                temp.transform.position = this.transform.position + this.transform.up * 0.4f * Mathf.Sign(this.transform.localScale.x);
-                // temp.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
+                    temp.transform.position = this.transform.position + this.transform.up * 0.4f * Mathf.Sign(this.transform.localScale.x);
+                    // temp.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
 
-                temp.setDirection(d * 45 *i);
+                    temp.setDirection(d);
 
-
+                rifleCool = 0.5f;
+                
             }
+           
 
         }
 
