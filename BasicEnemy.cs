@@ -7,6 +7,9 @@ public class BasicEnemy : MonoBehaviour
 
     public GameObject Player;
     public float speed = 0.3f;
+
+    public int hp = 1;
+    public int score;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,7 +51,14 @@ public class BasicEnemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            Destroy(this.gameObject);
+            hp -= 1;
+            
+            if (hp <= 0)
+            {
+                //Scoremanager.setScore(Score)
+                Destroy(this.gameObject);
+            }
+          
         }
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Chaser : BasicEnemy
 {
+   // public int hp = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,11 +46,16 @@ public class Chaser : BasicEnemy
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Projectile"))
+            hp -= 1;
+                if(hp <= 0)
         {
             Destroy(this.gameObject);
         }
+            
     }
 }
+
+
 
 
 
