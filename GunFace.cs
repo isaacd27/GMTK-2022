@@ -31,8 +31,11 @@ public class GunFace : MonoBehaviour
     public int rifleAmmo = 6;
     public float rifleCool = 2f;
 
+    float diecool = 1f;
+    public float maxdiecool;
 
-
+    public string secondary;
+    public string primary;
     // Start is called before the first frame update
     void Start()
     {
@@ -65,21 +68,26 @@ public class GunFace : MonoBehaviour
     public void SetWeapon(String weapon)
     {
         Weapon = weapon;
+        primary = weapon;
         //playerMain.PlayerSwapAimNormal.SetWeapon(weapon);
-       // OnWeaponChanged?.Invoke(this, EventArgs.Empty);
+        // OnWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetSecondary(String weapon)
+    {
+        secondary = weapon;
+    }
   
 
      public String GetWeapon()
       {
      return Weapon;
-     }
+    }
 
     // Update is called once per frame
     void Update()
     {
-       // Grendaes = GameStateManager.Instance.getBombs();
+        // Grendaes = GameStateManager.Instance.getBombs();
         Vector3 Mouseposition = Input.mousePosition;
 
         Mouseposition = Camera.main.ScreenToWorldPoint(Mouseposition);
@@ -91,24 +99,33 @@ public class GunFace : MonoBehaviour
 
 
         transform.up = Direction;
-    
-    
 
-       
+
+
+
 
 
 
         pistolcool -= Time.deltaTime;
         rifleCool -= Time.deltaTime;
         stakecool -= Time.deltaTime;
+        shotcool -= Time.deltaTime;
 
         if (Input.GetAxis("Fire1") != 0)
         {
-          //  if(Weapon == "Stake" || Weapon == "Grenade")
-          //  {
-              //  Weapon = "Pistol";
-          //  }
+            //  if(Weapon == "Stake" || Weapon == "Grenade")
+            //  {
+            //  Weapon = "Pistol";
+            //  }
             onShoot(Direction);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            Weapon = primary;
+        }else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Weapon = secondary;
         }
 
     }
@@ -218,7 +235,45 @@ public class GunFace : MonoBehaviour
             }
            
 
-        }
+        }else if (Weapon == "Die")
+        {
+
+            int bulletnum;
+
+            bulletnum = Mathf.RoundToInt(UnityEngine.Random.Range(1, 6));
+            if (bulletnum == 1)
+            {
+
+                Projectile temp = GameObject.Instantiate(projPrefab, new Vector3(this.transform.position.x + d.x, this.transform.position.y + d.y), this.transform.rotation);
+
+                temp.transform.position = this.transform.position + this.transform.up * 0.4f * Mathf.Sign(this.transform.localScale.x);
+                // temp.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
+
+
+                temp.setDirection(d);
+              //  pistolcool = 1f;
+                //anim.SetBool("Rollin", false);
+               // anim.SetInteger("Rollno", bulletnum);
+                //string debug = anim.GetInteger("Rollno").ToString();
+             
+
+            }
+            else
+            {
+
+                for (int i = 0; i < bulletnum; i++)
+                {
+                    // Debug.Log("ran ");
+                    Projectile temp = GameObject.Instantiate(projPrefab, new Vector3(this.transform.position.x + d.x, this.transform.position.y + d.y), this.transform.rotation);
+
+                    temp.transform.position = this.transform.position + this.transform.up * 0.4f * Mathf.Sign(this.transform.localScale.x);
+                    // temp.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z);
+
+                    temp.setDirection(d * (Mathf.Deg2Rad * (angleoffset * i)));
+
+
+                }
+            }
 
     }
 }
