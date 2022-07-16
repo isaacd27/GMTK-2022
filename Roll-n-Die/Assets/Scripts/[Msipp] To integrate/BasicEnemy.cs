@@ -13,7 +13,8 @@ public class BasicEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player = FindObjectOfType<PlayerController>().gameObject;
+        Debug.Assert(Player);
     }
 
     // Update is called once per frame
@@ -47,7 +48,7 @@ public class BasicEnemy : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
