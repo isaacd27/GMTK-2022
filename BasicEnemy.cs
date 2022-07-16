@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicEnemy : MonoBehaviour
 {
-
+    //public GameObject coinprefab;
     public GameObject Player;
     public float speed = 0.3f;
 
@@ -55,6 +55,7 @@ public class BasicEnemy : MonoBehaviour
             
             if (hp <= 0)
             {
+                //temp = GameObject.Instantiate(coinprefab, new Vector3(this.transform.position.x + d.x, this.transform.position.y + d.y), this.transform.rotation);
                 //Scoremanager.setScore(Score)
                 Destroy(this.gameObject);
             }
